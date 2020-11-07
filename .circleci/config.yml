@@ -17,9 +17,10 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
       - run:
+          name: Split tests by time
           command: |
             echo $(circleci tests glob "tests/*")
-            circleci tests glob "tests/*" | xargs -n 1 echo
+            circleci tests glob "tests/*" | circleci tests split --split-by=timings
       - run:
           name: Run tests
           command: |
