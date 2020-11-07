@@ -6,20 +6,26 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.2-stretch-browsers
-
+      - image: circleci/python:3.7.9
+    parallelism: 4
     steps:
       - checkout
       - run:
           name: Install requirements
           command: |
-            python 3 -m venv venv
-            ./venv/bin/activate
+            python3 -m venv venv
+            . venv/bin/activate
             pip install -r requirements.txt
+      - run:
+          name: Split tests by time
+          command: |
+            echo $(circleci tests glob "tests/*")
+            circleci tests glob "tests/*" | circleci tests split --split-by=timings > /tmp/tests_run
       - run:
           name: Run tests
           command: |
-            ./venv/bin/activate
-            pytest -v tests/
+            . venv/bin/activate
+            echo `cat /tmp/tests_run`
+            pytest -n auto -v `cat /tmp/tests_run`
       - store_test_results:
-          path: test-reports/
+          path: test-results
