@@ -5,7 +5,7 @@ import time
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
-        time.sleep(15)
+        time.sleep(3)
         self.assertTrue(True)
 
     def test_some_1(self):
