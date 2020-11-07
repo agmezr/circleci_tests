@@ -25,6 +25,7 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
+            echo /tmp/tests_run
             pytest -v `cat /tmp/tests_run`
       - store_test_results:
           path: test-results
