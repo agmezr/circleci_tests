@@ -20,11 +20,11 @@ jobs:
           name: Split tests by time
           command: |
             echo $(circleci tests glob "tests/*")
-            circleci tests glob "tests/*" | circleci tests split --split-by=timings
+            circleci tests glob "tests/*" | circleci tests split --split-by=timings > /tmp/tests_run
       - run:
           name: Run tests
           command: |
             . venv/bin/activate
-            pytest -v tests/
+            pytest -v `cat /tmp/tests_run`
       - store_test_results:
           path: test-results
