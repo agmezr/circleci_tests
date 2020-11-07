@@ -1,9 +1,11 @@
 import unittest
 import time
+import pytest
 
 
 class MyTestCase(unittest.TestCase):
 
+    @pytest.mark.medium
     def test_something(self):
         time.sleep(3)
         self.assertTrue(True)
@@ -12,6 +14,7 @@ class MyTestCase(unittest.TestCase):
         time.sleep(5)
         self.assertTrue(True)
 
+    @pytest.mark.medium
     def test_some_2(self):
         time.sleep(5)
         self.assertTrue(True)
@@ -20,6 +23,7 @@ class MyTestCase(unittest.TestCase):
         time.sleep(5)
         self.assertTrue(True)
 
+    @pytest.mark.medium
     def test_some_4(self):
         time.sleep(5)
         self.assertTrue(True)
