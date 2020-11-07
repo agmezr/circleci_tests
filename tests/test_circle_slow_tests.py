@@ -24,6 +24,22 @@ class MyTestCase(unittest.TestCase):
         time.sleep(5)
         self.assertTrue(True)
 
+    def test_some_5(self):
+        time.sleep(5)
+        self.assertTrue(True)
+
+    def test_some_6(self):
+        time.sleep(5)
+        self.assertTrue(True)
+
+    def test_some_7(self):
+        time.sleep(5)
+        self.assertTrue(True)
+
+    def test_some_8(self):
+        time.sleep(5)
+        self.assertTrue(True)
+
 
 if __name__ == '__main__':
     unittest.main()
