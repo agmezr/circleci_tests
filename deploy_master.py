@@ -60,7 +60,7 @@ def main():
     for env in ("master", "develop"):
         print("Merge to ", env)
         run_command(f"git checkout {env}")
-        run_command(f'git merge {branch_name} -m "Merge with {version}"')
+        run_command(f'git merge {branch_name} -m "{version}"')
         run_command(f"git push origin {env} --follow-tags")
 
     print("Deploy done!")
