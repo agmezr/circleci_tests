@@ -63,6 +63,7 @@ def main():
 
     print("Creating and pushing release")
     # commit new version
+    subprocess.run(["git", "add", "."])
     result = subprocess.run(["git", "commit", "-m", version])
     if result.returncode != 0:
         print("Could not create commit for branch")
