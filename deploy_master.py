@@ -49,8 +49,12 @@ def main():
             sys.exit(1)
 
 
+
     # create release branch
-    subprocess.run(["git", "flow", "release", "start", version])
+    result = subprocess.run(["git", "flow", "release", "start", version])
+    if result.returncode != 0:
+        print("Could not create a release branch.")
+        sys.exit(1)
 
     # bump version
     print("Bump version on version file")
@@ -59,10 +63,17 @@ def main():
 
     print("Creating and pushing release")
     # commit new version
-    subprocess.run(["git", "commit", "-a", version, "-m", version])
+    result = subprocess.run(["git", "commit", "-m", version])
+    if result.returncode != 0:
+        print("Could not create commit for branch")
+        sys.exit(1)
+
+    subprocess.run(["git", "tag", "-a", version, "-m", version])
 
     # push new version
     subprocess.run(["git", "push", "origin", branch_name])
+
+    subprocess.run(["git", "flow", "feature", "finish", version])
 
     for env in ("develop", "master"):
         print("Merge to ", env)
