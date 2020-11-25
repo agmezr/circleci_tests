@@ -37,24 +37,13 @@ def main():
 
     if args.validate:
         print("Checking lint")
-        result = subprocess.run(["bash", "lint_check.sh"])
-        if result.returncode != 0:
-            print("Lint check failed, please verify it and try again.")
-            sys.exit(1)
+        run_command("bash lint_check.sh", "Lint check failed, please verify it and try again.")
 
         print("Running tests")
-        result = subprocess.run(["make", "tests_parallel"])
-        if result.returncode != 0:
-            print("Some tests failed, please verify it and try again.")
-            sys.exit(1)
-
-
+        run_command("make tests_parallel", "Some tests failed, please verify it and try again.")
 
     # create release branch
-    result = subprocess.run(["git", "flow", "release", "start", version])
-    if result.returncode != 0:
-        print("Could not create a release branch.")
-        sys.exit(1)
+    run_command(f"git flow release start {version}", "Could not create a release branch.")
 
     # bump version
     print("Bump version on version file")
@@ -63,26 +52,29 @@ def main():
 
     print("Creating and pushing release")
     # commit new version
-    subprocess.run(["git", "add", "."])
-    result = subprocess.run(["git", "commit", "-m", version])
-    if result.returncode != 0:
-        print("Could not create commit for branch")
-        sys.exit(1)
-
-    subprocess.run(["git", "tag", "-a", version, "-m", version])
-
-    # push new version
-    subprocess.run(["git", "push", "origin", branch_name])
-
-    subprocess.run(["git", "flow", "feature", "finish", version])
+    run_command("git add .")
+    run_command(f"git commit -m {version}")
+    run_command(f"git tag -a {version} -m {version}")
+    run_command(f"git push origin {branch_name}")
+    #run_command(f"git flow release finish version")
 
     for env in ("develop", "master"):
         print("Merge to ", env)
-        subprocess.run(["git", "checkout", env])
-        subprocess.run(["git", "merge", branch_name])
-        subprocess.run(["git", "push", "origin", env, "--follow-tags"])
+        run_command(f"git checkout {env}")
+        run_command(f"git merge {branch_name}")
+        run_command(f"git push origin {env} --follow-tags")
 
     print("Deploy done!")
+
+
+def run_command(cmd, error="Error, return code not 0"):
+    """Runs a given command and verified that the return code is correct."""
+    commands = cmd.strip().split(" ")
+    result = subprocess.run(commands)
+    if result.returncode != 0:
+        print(error)
+        sys.exit(1)
+
 
 
 if __name__ == "__main__":
