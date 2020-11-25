@@ -57,7 +57,7 @@ def main():
     run_command(f"git tag -a {version} -m {version}")
     run_command(f"git push origin {branch_name}")
 
-    for env in ("develop", "master"):
+    for env in ("master", "develop"):
         print("Merge to ", env)
         run_command(f"git checkout {env}")
         run_command(f'git merge {branch_name} -m "Merge with {version}"')
