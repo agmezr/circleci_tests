@@ -56,12 +56,11 @@ def main():
     run_command(f"git commit -m {version}")
     run_command(f"git tag -a {version} -m {version}")
     run_command(f"git push origin {branch_name}")
-    #run_command(f"git flow release finish version")
 
     for env in ("develop", "master"):
         print("Merge to ", env)
         run_command(f"git checkout {env}")
-        run_command(f"git merge {branch_name}")
+        run_command(f'git merge {branch_name} -m "Merge with {version}"')
         run_command(f"git push origin {env} --follow-tags")
 
     print("Deploy done!")
@@ -74,7 +73,6 @@ def run_command(cmd, error="Error, return code not 0"):
     if result.returncode != 0:
         print(error)
         sys.exit(1)
-
 
 
 if __name__ == "__main__":
